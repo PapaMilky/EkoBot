@@ -7,9 +7,8 @@ module.exports = {
     permissions: 'KICK_MEMBERS',
     guildOnly: true,
     execute(message, args) {
-        const taggedUser = message.mentions.users.first();
         const member = message.mentions.members.first();
-        message.channel.send(`You Kicked: ${taggedUser.username}`);
+        message.channel.send(`You Kicked: ${member.username}`);
         member.kick();
     },
 };
