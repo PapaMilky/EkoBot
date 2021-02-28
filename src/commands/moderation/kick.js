@@ -8,6 +8,8 @@ module.exports = {
     guildOnly: true,
     execute(message, args) {
         const taggedUser = message.mentions.users.first();
-        message.channel.send(`You wanted to kick: ${taggedUser.username}`);
+        const member = message.mentions.members.first();
+        message.channel.send(`You Kicked: ${taggedUser.username}`);
+        member.kick();
     },
 };
