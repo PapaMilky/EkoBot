@@ -9,7 +9,6 @@ module.exports = async (client) => {
     const activities = [`${prefix}help`, `the sunset`, `${guildsamount} servers`, `My Devs Have A Bad Day`];
 
     let activity = activities[Math.floor(Math.random() * activities.length)];
-    client.user.setActivity(activity, {type: "WATCHING"});
 
     console.log("Activity Changer Started Successfully");
 
