@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'reload',
     description: 'Reloads a command',
-    permissions: 'ADMINSTRATOR',
+    permissions: 'ADMINISTRATOR',
     execute(message, args) {
 
         const reloadNon1Embed = new Discord.MessageEmbed()

@@ -1,13 +1,13 @@
+const fs = require('fs')
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-const fs = require('fs')
+
+const status = require('./status.js')
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 const commandFolders = fs.readdirSync('./commands');
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const cooldowns = new Discord.Collection();
 
 for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -17,16 +17,17 @@ for (const folder of commandFolders) {
     }
 }
 
-
+const cooldowns = new Discord.Collection();
 
 client.once('ready', () => {
-    console.log('Ready!');
+    console.log(`Ready! Logged in as ${client.user.tag}`);
+    status(client);
 });
-
 
 client.login(token);
 
 client.on('message', message => {
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -42,7 +43,7 @@ client.on('message', message => {
 
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || 3) * 1000;
+    const cooldownAmount = (command.cooldown) * 1000;
 
     if (timestamps.has(message.author.id)) {
     }
@@ -78,16 +79,17 @@ client.on('message', message => {
     timestamps.set(message.author.id, now);
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
-
-
-
     try {
         command.execute(message, args);
     } catch (error) {
         console.log('you fucked something up again lmao')
         console.error(error);
-        message.reply('there was an error trying to execute that command!');
+        const errorEmbed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('F***')
+            .setDescription('There was an error trying to execute that command.\n Please contact the EkoBot Dev Team if this continues.')
+            .setFooter('EkoBot, Brought To You By The Eko Team')
+        message.reply(errorEmbed);
     }
     console.log(message.author, message.content);
 });
-
