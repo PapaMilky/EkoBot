@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
-const { prefix } = require('./config.json');
+const { prefix, avatar } = require('./config.json');
 
 module.exports = async (client) => {
 
     let guildsamount = await client.shard.fetchClientValues(`guilds.cache.size`).then(results => results.reduce((acc, guildCount) => acc + guildCount, 0)).catch(console.error);
 
+    client.user.setAvatar(avatar)
 
     const activities = [`${prefix}help`, `the sunset`, `${guildsamount} servers`, `My Devs Have A Bad Day`];
 
